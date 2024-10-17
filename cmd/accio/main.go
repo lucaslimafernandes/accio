@@ -4,23 +4,26 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"github.com/lucaslimafernandes/pkg/sshconn"
 )
 
 func main() {
 
-	_help := flag.Bool("help", false, "Show available commands")
+	help := flag.Bool("help", false, "Show available commands")
+	run := flag.Bool("run", false, "Execute")
+	host := flag.String("h", "", "host (format: ip:port)")
+	user := flag.String("u", "", "user")
+	keyPath := flag.String("k", "", "key path to SSH private key")
 
 	flag.Parse()
 
-	if *_help {
+	if *help {
 		flag.PrintDefaults()
 	}
 
-	switch os.Args[1] {
-	case "run":
-		runnn()
-	default:
-		fmt.Printf("Unknown subcommand: %s\n", os.Args[1])
+	if *run {
+		runnn(*host, *user, *keyPath)
 	}
 
 	if len(os.Args) == 1 {
@@ -29,6 +32,15 @@ func main() {
 	}
 }
 
-func runnn() {
+func runnn(h, u, k string) {
+
 	fmt.Println("Executing...")
+
+	err := sshconn.SSHConn(h, u, k)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println("Closing...")
+
 }
