@@ -1,11 +1,10 @@
-[all]
-[[all.nodes]]
+[[nodes]]
 name = "instancia1"
 host = "10.128.0.1"
 user = "ubuntu"
 private_key_path = "/home/user/.ssh/id_rsa"
 
-[[all.nodes]]
+[[nodes]]
 name = "instancia2"
 host = "10.128.0.2"
 user = "ubuntu"
