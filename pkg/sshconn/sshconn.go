@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"time"
 
 	"golang.org/x/crypto/ssh"
 )
@@ -26,6 +27,7 @@ func SSHConn(host, username, keyPath string) error {
 			ssh.PublicKeys(signer),
 		},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		Timeout:         6 * time.Hour,
 	}
 
 	client, err := ssh.Dial("tcp", host, config)
