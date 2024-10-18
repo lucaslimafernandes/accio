@@ -18,6 +18,8 @@ type Hosts struct {
 	Nodes []Node `toml:"nodes"`
 }
 
+// ReadHostsFile read the file with the hosts configs
+// It returns a pointer to the Hosts and an error if something goes wrong.
 func ReadHostsFile(path *string) (*Hosts, error) {
 
 	var hosts Hosts
