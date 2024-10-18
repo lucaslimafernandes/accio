@@ -3,8 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
+	readfiles "github.com/lucaslimafernandes/pkg/read_files"
 	"github.com/lucaslimafernandes/pkg/sshconn"
 )
 
@@ -16,10 +18,27 @@ func main() {
 	user := flag.String("u", "", "user")
 	keyPath := flag.String("k", "", "key path to SSH private key")
 
+	hostsPath := flag.String("hosts", "", "hosts path")
+
 	flag.Parse()
 
 	if *help {
 		flag.PrintDefaults()
+	}
+
+	if *hostsPath != "" {
+
+		var hosts *readfiles.Hosts
+
+		hosts, err := readfiles.ReadHostsFile(hostsPath)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		runnn(hosts.Nodes[0].Host, hosts.Nodes[0].User, hosts.Nodes[0].PrivateKeyPath)
+
+		runnn(hosts.Nodes[1].Host, hosts.Nodes[1].User, hosts.Nodes[1].PrivateKeyPath)
+
 	}
 
 	if *run {
