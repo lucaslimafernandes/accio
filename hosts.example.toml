@@ -1,11 +1,11 @@
 [[nodes]]
 name = "instancia1"
-host = "10.128.0.1"
+host = "10.128.0.1:22"
 user = "ubuntu"
 private_key_path = "/home/user/.ssh/id_rsa"
 
 [[nodes]]
 name = "instancia2"
-host = "10.128.0.2"
+host = "10.128.0.2:22"
 user = "ubuntu"
 private_key_path = "/home/user/.ssh/id_rsa"
