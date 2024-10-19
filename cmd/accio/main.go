@@ -52,6 +52,7 @@ func runn(hostsPath *string, tasks *readfiles.Runfile) {
 	// commands := []string{"whoami", "hostname"}
 
 	var commands []string
+	var errors []error
 
 	for _, value := range tasks.Tasks {
 		commands = append(commands, value.Command)
@@ -83,7 +84,9 @@ func runn(hostsPath *string, tasks *readfiles.Runfile) {
 				if err != nil {
 					fmt.Printf("Error to execute command: %v\n", err)
 					fmt.Printf("stderr: %v\n", stderr)
-					return
+
+					errors = append(errors, fmt.Errorf("%v: %v", err, stderr))
+					continue
 				}
 
 				fmt.Printf("OK: %s\n", stdout)
@@ -95,6 +98,11 @@ func runn(hostsPath *string, tasks *readfiles.Runfile) {
 	}
 
 	wg.Wait()
+
+	fmt.Println("Errors occured")
+	for _, e := range errors {
+		fmt.Println(e)
+	}
 
 }
 
