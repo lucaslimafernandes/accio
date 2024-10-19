@@ -12,5 +12,10 @@ tasks:
     node: 
       - oci1
     command: hostname
+
+  - name: kidding
+    node: 
+      - oci1
+    command: echo "It's working!"
   
 
