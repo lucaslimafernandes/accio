@@ -14,7 +14,8 @@ import (
 
 func main() {
 
-	comm := []string{"/usr/bin/whoami", "/usr/bin/hostname"}
+	// /usr/bin/hostname
+	comm := []string{"whoami", "hostname"}
 
 	help := flag.Bool("help", false, "Show available commands")
 	// run := flag.Bool("run", false, "Execute")

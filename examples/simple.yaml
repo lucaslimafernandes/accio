@@ -1,0 +1,16 @@
+name: simple_example
+remote_user: ubuntu
+
+tasks:
+  - name: who_am_i
+    node: 
+      - oci1
+      - oci2
+    command: whoami
+
+  - name: hostname
+    node: 
+      - oci1
+    command: hostname
+  
+
