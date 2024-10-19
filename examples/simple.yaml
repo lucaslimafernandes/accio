@@ -8,20 +8,27 @@ tasks:
       - oci2
     command: whoami
 
-  - name: raise_error
-    node: 
-      - oci1
-      - oci2
-    command: wh
+  # - name: raise_error
+  #   node: 
+  #     - oci1
+  #     - oci2
+  #   command: wh
 
   - name: hostname
     node: 
       - oci1
     command: hostname
+  
+  - name: hostname -I
+    node: 
+      - oci1
+      - oci2
+    command: hostname -I
 
   - name: kidding
     node: 
       - oci1
+      - oci2
     command: echo "It's working!"
   
 
