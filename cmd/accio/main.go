@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -12,11 +13,13 @@ import (
 
 func main() {
 
+	comm := []string{"/usr/bin/whoami", "/usr/bin/hostname"}
+
 	help := flag.Bool("help", false, "Show available commands")
-	run := flag.Bool("run", false, "Execute")
-	host := flag.String("h", "", "host (format: ip:port)")
-	user := flag.String("u", "", "user")
-	keyPath := flag.String("k", "", "key path to SSH private key")
+	// run := flag.Bool("run", false, "Execute")
+	// host := flag.String("h", "", "host (format: ip:port)")
+	// user := flag.String("u", "", "user")
+	// keyPath := flag.String("k", "", "key path to SSH private key")
 
 	hostsPath := flag.String("hosts", "", "hosts path")
 
@@ -30,19 +33,35 @@ func main() {
 
 		var hosts *readfiles.Hosts
 
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
 		hosts, err := readfiles.ReadHostsFile(hostsPath)
 		if err != nil {
 			log.Fatalln(err)
 		}
 
-		runnn(hosts.Nodes[0].Host, hosts.Nodes[0].User, hosts.Nodes[0].PrivateKeyPath)
+		for _, items := range hosts.Nodes {
 
-		runnn(hosts.Nodes[1].Host, hosts.Nodes[1].User, hosts.Nodes[1].PrivateKeyPath)
+			conn, err := sshconn.InitSSHConn(&items)
+			if err != nil {
+				log.Printf("Error to connect %v: %v\n", items.Name, err)
+			}
 
-	}
+			for _, cmd := range comm {
+				stdout, stderr, err := sshconn.ExecCmd(ctx, cmd, conn)
+				if err != nil {
+					fmt.Printf("Error to execute command: %v\n", err)
+					fmt.Printf("stderr: %v\n", stderr)
+					return
+				}
 
-	if *run {
-		runnn(*host, *user, *keyPath)
+				fmt.Printf("OK: %s\n", stdout)
+
+			}
+
+		}
+
 	}
 
 	if len(os.Args) == 1 {
@@ -51,15 +70,15 @@ func main() {
 	}
 }
 
-func runnn(h, u, k string) {
+// func runnn(h, u, k string) {
 
-	fmt.Println("Executing...")
+// 	fmt.Println("Executing...")
 
-	err := sshconn.SSHConn(h, u, k)
-	if err != nil {
-		fmt.Println(err)
-	}
+// 	err := sshconn.SSHConn(h, u, k)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
 
-	fmt.Println("Closing...")
+// 	fmt.Println("Closing...")
 
-}
+// }
