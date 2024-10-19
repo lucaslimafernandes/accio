@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"sync"
 
 	readfiles "github.com/lucaslimafernandes/pkg/read_files"
@@ -51,13 +52,15 @@ func runn(hostsPath *string, tasks *readfiles.Runfile) {
 	// /usr/bin/hostname
 	// commands := []string{"whoami", "hostname"}
 
-	var commands []string
+	// var commands []string
+
+	// ct := make(map[string][]string)
+
+	// for _, value := range tasks.Tasks {
+	// 	commands = append(commands, value.Command)
+	// }
+
 	var errors []error
-
-	for _, value := range tasks.Tasks {
-		commands = append(commands, value.Command)
-	}
-
 	var wg sync.WaitGroup
 	var hosts *readfiles.Hosts
 
@@ -79,19 +82,38 @@ func runn(hostsPath *string, tasks *readfiles.Runfile) {
 				log.Printf("Error to connect %v: %v\n", items.Name, err)
 			}
 
-			for _, cmd := range commands {
-				stdout, stderr, err := sshconn.ExecCmd(ctx, cmd, conn)
-				if err != nil {
-					fmt.Printf("Error to execute command: %v\n", err)
-					fmt.Printf("stderr: %v\n", stderr)
+			// for _, cmd := range commands {
 
-					errors = append(errors, fmt.Errorf("%v: %v", err, stderr))
-					continue
+			// 	stdout, stderr, err := sshconn.ExecCmd(ctx, cmd, conn)
+			// 	if err != nil {
+			// 		fmt.Printf("Error to execute command: %v\n", err)
+			// 		fmt.Printf("stderr: %v\n", stderr)
+
+			// 		errors = append(errors, fmt.Errorf("%v: %v", err, stderr))
+			// 		continue
+			// 	}
+
+			// 	fmt.Printf("OK: %s\n", stdout)
+
+			// }
+
+			for _, exec := range tasks.Tasks {
+
+				if slices.Contains(exec.Node, items.Name) {
+					stdout, stderr, err := sshconn.ExecCmd(ctx, exec.Command, conn)
+					if err != nil {
+						fmt.Printf("Error to execute command: %v\n", err)
+						fmt.Printf("stderr: %v\n", stderr)
+
+						errors = append(errors, fmt.Errorf("%v: %v", err, stderr))
+						continue
+					}
+
+					fmt.Printf("OK: %s\n", stdout)
 				}
 
-				fmt.Printf("OK: %s\n", stdout)
-
 			}
+
 			wg.Done()
 		}()
 
