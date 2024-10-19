@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 
 	readfiles "github.com/lucaslimafernandes/pkg/read_files"
 	"github.com/lucaslimafernandes/pkg/sshconn"
@@ -31,6 +32,7 @@ func main() {
 
 	if *hostsPath != "" {
 
+		var wg sync.WaitGroup
 		var hosts *readfiles.Hosts
 
 		ctx, cancel := context.WithCancel(context.Background())
@@ -43,24 +45,31 @@ func main() {
 
 		for _, items := range hosts.Nodes {
 
-			conn, err := sshconn.InitSSHConn(&items)
-			if err != nil {
-				log.Printf("Error to connect %v: %v\n", items.Name, err)
-			}
+			wg.Add(1)
 
-			for _, cmd := range comm {
-				stdout, stderr, err := sshconn.ExecCmd(ctx, cmd, conn)
+			go func() {
+				conn, err := sshconn.InitSSHConn(&items)
 				if err != nil {
-					fmt.Printf("Error to execute command: %v\n", err)
-					fmt.Printf("stderr: %v\n", stderr)
-					return
+					log.Printf("Error to connect %v: %v\n", items.Name, err)
 				}
 
-				fmt.Printf("OK: %s\n", stdout)
+				for _, cmd := range comm {
+					stdout, stderr, err := sshconn.ExecCmd(ctx, cmd, conn)
+					if err != nil {
+						fmt.Printf("Error to execute command: %v\n", err)
+						fmt.Printf("stderr: %v\n", stderr)
+						return
+					}
 
-			}
+					fmt.Printf("OK: %s\n", stdout)
+
+				}
+				wg.Done()
+			}()
 
 		}
+
+		wg.Wait()
 
 	}
 
