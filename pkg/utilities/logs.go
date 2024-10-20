@@ -1,9 +1,20 @@
 package utilities
 
-import "log"
+import (
+	"log"
+	"os"
+
+	"github.com/muesli/termenv"
+)
 
 func APrint(node, task, stdout *string) {
 
-	log.Printf("Node: %s\tTask: %s\t stdout: %s", *node, *task, *stdout)
+	output := termenv.NewOutput(os.Stdout, termenv.WithProfile(termenv.TrueColor))
+
+	s := output.String(*task)
+
+	styledString := s.Foreground(output.Color("#000000")).Background(output.Color("#00ff00"))
+
+	log.Printf("Node: %s\tTask: %s\t stdout: %s", *node, styledString, *stdout)
 
 }
