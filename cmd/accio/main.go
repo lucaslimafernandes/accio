@@ -1,16 +1,13 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"log"
 	"os"
-	"slices"
-	"sync"
 
 	readfiles "github.com/lucaslimafernandes/pkg/read_files"
-	"github.com/lucaslimafernandes/pkg/sshconn"
+	sshexec "github.com/lucaslimafernandes/pkg/ssh_exec"
 )
 
 func main() {
@@ -37,7 +34,7 @@ func main() {
 			log.Fatalln(err)
 		}
 
-		runn(hostsPath, tasks)
+		sshexec.RunCmd(hostsPath, tasks)
 
 	}
 
@@ -46,97 +43,3 @@ func main() {
 		return
 	}
 }
-
-func runn(hostsPath *string, tasks *readfiles.Runfile) {
-
-	// /usr/bin/hostname
-	// commands := []string{"whoami", "hostname"}
-
-	// var commands []string
-
-	// ct := make(map[string][]string)
-
-	// for _, value := range tasks.Tasks {
-	// 	commands = append(commands, value.Command)
-	// }
-
-	var errors []error
-	var wg sync.WaitGroup
-	var hosts *readfiles.Hosts
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	hosts, err := readfiles.ReadHostsFile(hostsPath)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	for _, items := range hosts.Nodes {
-
-		wg.Add(1)
-
-		go func() {
-			conn, err := sshconn.InitSSHConn(&items)
-			if err != nil {
-				log.Printf("Error to connect %v: %v\n", items.Name, err)
-			}
-
-			// for _, cmd := range commands {
-
-			// 	stdout, stderr, err := sshconn.ExecCmd(ctx, cmd, conn)
-			// 	if err != nil {
-			// 		fmt.Printf("Error to execute command: %v\n", err)
-			// 		fmt.Printf("stderr: %v\n", stderr)
-
-			// 		errors = append(errors, fmt.Errorf("%v: %v", err, stderr))
-			// 		continue
-			// 	}
-
-			// 	fmt.Printf("OK: %s\n", stdout)
-
-			// }
-
-			for _, exec := range tasks.Tasks {
-
-				if slices.Contains(exec.Node, items.Name) {
-					stdout, stderr, err := sshconn.ExecCmd(ctx, exec.Command, conn)
-					if err != nil {
-						fmt.Printf("Error to execute command: %v\n", err)
-						fmt.Printf("stderr: %v\n", stderr)
-
-						errors = append(errors, fmt.Errorf("%v: %v", err, stderr))
-						continue
-					}
-
-					fmt.Printf("OK: %s\n", stdout)
-				}
-
-			}
-
-			wg.Done()
-		}()
-
-	}
-
-	wg.Wait()
-
-	fmt.Println("Errors occured")
-	for _, e := range errors {
-		fmt.Println(e)
-	}
-
-}
-
-// func runnn(h, u, k string) {
-
-// 	fmt.Println("Executing...")
-
-// 	err := sshconn.SSHConn(h, u, k)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 	}
-
-// 	fmt.Println("Closing...")
-
-// }
