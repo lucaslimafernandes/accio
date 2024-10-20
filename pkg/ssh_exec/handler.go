@@ -11,7 +11,7 @@ import (
 	"github.com/lucaslimafernandes/pkg/sshconn"
 )
 
-type TaksLog struct {
+type TaskLog struct {
 	Task   string
 	Ok     bool
 	Errors []error
@@ -19,13 +19,15 @@ type TaksLog struct {
 
 type Log struct {
 	Node string
-	Task []TaksLog
+	Task []TaskLog
 }
+
+var mutex sync.Mutex
 
 func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 
 	var errors []error
-	var logs Log
+	var nodesLogs []Log
 	var wg sync.WaitGroup
 	var hosts *readfiles.Hosts
 
@@ -42,31 +44,36 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 		wg.Add(1)
 
 		go func() {
+
+			var logs Log
+
 			conn, err := sshconn.InitSSHConn(&items)
 			if err != nil {
 				log.Printf("Error to connect %v: %v\n", items.Name, err)
+
+				mutex.Lock()
 				logs = Log{
 					Node: items.Name,
-					Task: []TaksLog{
-						{
-							Task:   "SSH Connect",
-							Ok:     false,
-							Errors: []error{fmt.Errorf("failed to establish connection %v: %v\n", items.Name, err)},
-						},
-					},
+					Task: append(logs.Task, TaskLog{
+						Task:   "SSH Connect",
+						Ok:     false,
+						Errors: []error{fmt.Errorf("failed to establish connection %v: %v", items.Name, err)},
+					}),
 				}
+
+				mutex.Unlock()
 				return
 			}
 
+			mutex.Lock()
 			logs = Log{
 				Node: items.Name,
-				Task: []TaksLog{
-					{
-						Task: "SSH Connect",
-						Ok:   true,
-					},
-				},
+				Task: append(logs.Task, TaskLog{
+					Task: "SSH Connect",
+					Ok:   true,
+				}),
 			}
+			mutex.Unlock()
 
 			for _, exec := range tasks.Tasks {
 
@@ -76,15 +83,37 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 						fmt.Printf("Error to execute command: %v\n", err)
 						fmt.Printf("stderr: %v\n", stderr)
 
+						mutex.Lock()
+						logs = Log{
+							Node: items.Name,
+							Task: append(logs.Task, TaskLog{
+								Task:   exec.Name,
+								Ok:     false,
+								Errors: []error{fmt.Errorf("%v: %v", err, stderr)},
+							}),
+						}
+						mutex.Unlock()
+
 						errors = append(errors, fmt.Errorf("%v: %v", err, stderr))
 						continue
 					}
+
+					mutex.Lock()
+					logs = Log{
+						Node: items.Name,
+						Task: append(logs.Task, TaskLog{
+							Task: exec.Name,
+							Ok:   true,
+						}),
+					}
+					mutex.Unlock()
 
 					fmt.Printf("OK: %s\n", stdout)
 				}
 
 			}
 
+			nodesLogs = append(nodesLogs, logs)
 			wg.Done()
 		}()
 
@@ -96,5 +125,8 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 	for _, e := range errors {
 		fmt.Println(e)
 	}
+
+	fmt.Println("Errors occured")
+	fmt.Printf("%v", nodesLogs)
 
 }
