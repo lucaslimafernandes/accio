@@ -8,11 +8,11 @@ tasks:
       - oci2
     command: whoami
 
-  # - name: raise_error
-  #   node: 
-  #     - oci1
-  #     - oci2
-  #   command: wh
+  - name: raise_error
+    node: 
+      - oci1
+      - oci2
+    command: wh
 
   - name: hostname
     node: 

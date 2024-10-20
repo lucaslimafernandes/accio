@@ -81,8 +81,9 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 				if slices.Contains(exec.Node, items.Name) {
 					stdout, stderr, err := sshconn.ExecCmd(ctx, exec.Command, conn)
 					if err != nil {
-						// fmt.Printf("Error to execute command: %v\n", err)
-						// fmt.Printf("stderr: %v\n", stderr)
+						// _toPrint := fmt.Sprintf("%v: %v", err, stderr)
+						// utilities.ErrPrint(&items.Name, &exec.Name, &_toPrint)
+						utilities.ErrPrint(&items.Name, &exec.Name, &stderr)
 
 						mutex.Lock()
 						logs = Log{
@@ -120,11 +121,6 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 	}
 
 	wg.Wait()
-
-	fmt.Println("Errors occured")
-	for _, e := range errors {
-		fmt.Println(e)
-	}
 
 	fmt.Println("Errors occured")
 	fmt.Printf("%v", nodesLogs)
