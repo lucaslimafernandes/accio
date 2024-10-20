@@ -25,7 +25,7 @@ type Log struct {
 func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 
 	var errors []error
-	// var logs Log
+	var logs Log
 	var wg sync.WaitGroup
 	var hosts *readfiles.Hosts
 
@@ -45,12 +45,17 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 			conn, err := sshconn.InitSSHConn(&items)
 			if err != nil {
 				log.Printf("Error to connect %v: %v\n", items.Name, err)
-				// logs = Log{
-				// 	Node: items.Name,
-				// 	Task: []TaksLog{
-				// 		Task
-				// 	},
-				// }
+				logs = Log{
+					Node: items.Name,
+					Task: []TaksLog{
+						{
+							Task:   "SSH Connect",
+							Log:    "Failed to establish connection",
+							Errors: []error{fmt.Errorf("Error to connect %v: %v\n", items.Name, err)},
+						},
+					},
+				}
+				return
 			}
 
 			for _, exec := range tasks.Tasks {
