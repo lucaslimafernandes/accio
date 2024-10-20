@@ -122,7 +122,35 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 
 	wg.Wait()
 
-	fmt.Println("Errors occured")
-	fmt.Printf("%v", nodesLogs)
+	Finish(&nodesLogs)
+
+}
+
+func Finish(nodesLogs *[]Log) {
+
+	var thereErrs bool
+
+	fmt.Println("\nThe execution is done")
+	fmt.Printf("\n")
+
+	for _, itemNode := range *nodesLogs {
+		for _, value := range itemNode.Task {
+
+			if !value.Ok {
+				thereErrs = true
+				break
+			}
+
+		}
+
+		if thereErrs {
+			fmt.Printf("Have errors occurred in: %v\n", itemNode.Node)
+			for _, value := range itemNode.Task {
+				if len(value.Errors) > 0 {
+					fmt.Println(value.Errors)
+				}
+			}
+		}
+	}
 
 }
