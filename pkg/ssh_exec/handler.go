@@ -13,7 +13,7 @@ import (
 
 type TaksLog struct {
 	Task   string
-	Log    string
+	Ok     bool
 	Errors []error
 }
 
@@ -50,12 +50,22 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 					Task: []TaksLog{
 						{
 							Task:   "SSH Connect",
-							Log:    "Failed to establish connection",
-							Errors: []error{fmt.Errorf("Error to connect %v: %v\n", items.Name, err)},
+							Ok:     false,
+							Errors: []error{fmt.Errorf("failed to establish connection %v: %v\n", items.Name, err)},
 						},
 					},
 				}
 				return
+			}
+
+			logs = Log{
+				Node: items.Name,
+				Task: []TaksLog{
+					{
+						Task: "SSH Connect",
+						Ok:   true,
+					},
+				},
 			}
 
 			for _, exec := range tasks.Tasks {
