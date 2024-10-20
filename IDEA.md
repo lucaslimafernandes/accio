@@ -19,8 +19,8 @@ Inspiration in Ansible, but no versions nonsense like python x for ansible y
     - [ ] more ideas
 - [ ] Logs
     - [X] Execution
-    - [ ] Errors
-    - [ ] Color
+    - [X] Errors
+    - [X] Color
     - [ ] Dump
 - [ ] Panic recoveries
 - [ ] Documentation
