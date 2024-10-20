@@ -9,6 +9,7 @@ import (
 
 	readfiles "github.com/lucaslimafernandes/pkg/read_files"
 	"github.com/lucaslimafernandes/pkg/sshconn"
+	"github.com/lucaslimafernandes/pkg/utilities"
 )
 
 type TaskLog struct {
@@ -80,8 +81,8 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 				if slices.Contains(exec.Node, items.Name) {
 					stdout, stderr, err := sshconn.ExecCmd(ctx, exec.Command, conn)
 					if err != nil {
-						fmt.Printf("Error to execute command: %v\n", err)
-						fmt.Printf("stderr: %v\n", stderr)
+						// fmt.Printf("Error to execute command: %v\n", err)
+						// fmt.Printf("stderr: %v\n", stderr)
 
 						mutex.Lock()
 						logs = Log{
@@ -108,7 +109,8 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 					}
 					mutex.Unlock()
 
-					fmt.Printf("OK: %s\n", stdout)
+					// fmt.Printf("OK: %s\n", stdout)
+					utilities.APrint(&items.Name, &exec.Name, &stdout)
 				}
 
 			}
