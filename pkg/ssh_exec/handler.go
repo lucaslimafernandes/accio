@@ -108,9 +108,7 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 						}),
 					}
 					mutex.Unlock()
-
-					// fmt.Printf("OK: %s\n", stdout)
-					utilities.APrint(&items.Name, &exec.Name, &stdout)
+					utilities.OKPrint(&items.Name, &exec.Name, &stdout)
 				}
 
 			}

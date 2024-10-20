@@ -7,7 +7,7 @@ import (
 	"github.com/muesli/termenv"
 )
 
-func APrint(node, task, stdout *string) {
+func OKPrint(node, task, stdout *string) {
 
 	output := termenv.NewOutput(os.Stdout, termenv.WithProfile(termenv.TrueColor))
 
