@@ -1,11 +1,30 @@
 runfile: simple_example
 
+envs:
+  - key: TEST1
+    value: TEST1_OK
+
+  - key: TEST2
+    value: TEST2_OK
+
 tasks:
   - name: who_am_i
     node: 
       - oci1
       - oci2
     command: whoami
+
+  - name: Env_TEST1
+    node: 
+      - oci1
+      - oci2
+    command: echo "$TEST1"
+
+  - name: Env_TEST2
+    node: 
+      - oci1
+      - oci2
+    command: echo "$TEST2"
 
   - name: raise_error
     node: 

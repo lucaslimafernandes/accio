@@ -12,6 +12,7 @@ Inspiration in Ansible, but no versions nonsense like python x for ansible y
     - [X] Example 1
     - [X] Execute
     - [ ] Check installed
+    - [ ] SetEnvs
     - [ ] More examples
     - [ ] Change user
     - [ ] Commands as array
