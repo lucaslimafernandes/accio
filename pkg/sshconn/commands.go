@@ -45,3 +45,47 @@ func ExecCmd(ctx context.Context, cmd string, client *ssh.Client) (string, strin
 	}
 
 }
+
+func NewExecCmd(ctx *context.Context, client *ssh.Client) (string, string, error) {
+
+	var stdoutBuffer bytes.Buffer
+	var stderrBuffer bytes.Buffer
+
+	commands := []string{"comando_1", "comando_2", "comando_3"}
+
+	session, err := client.NewSession()
+	if err != nil {
+		return "", "", fmt.Errorf("failed to create session: %v", err)
+	}
+	defer session.Close()
+
+	session.Stdout = &stdoutBuffer
+	session.Stderr = &stderrBuffer
+
+	// stdin pipe
+	stdin, err := session.StdinPipe()
+	if err != nil {
+		return "", "", fmt.Errorf("failed to create sdin pipe: %v", err)
+	}
+
+	go func() {
+		for _, cmd := range commands {
+			fmt.Fprintln(stdin, cmd)
+		}
+	}()
+
+	// Shell
+	err = session.Shell()
+	if err != nil {
+		return "", "", fmt.Errorf("failed to create shell: %v", err)
+	}
+
+	// Wait session
+
+	err = session.Wait()
+	if err != nil {
+		return "", "", fmt.Errorf("failed to wait session: %v", err)
+	}
+
+	return "", "", nil
+}
