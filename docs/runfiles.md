@@ -47,11 +47,27 @@ This field is for documentation purposes to describe the runfile.
 
 Defines environment variables that are set before any commands are executed in the tasks. Each variable must have a key and a value.
 
+```yaml
+envs:
+  - key: TEST1
+    value: VALUE_1
+
+  - key: TEST2
+    value: VALUE_2
+```
+
 ### tasks
 
 - `name`: Descriptive name of the task for identification.
 - `node`: List of nodes where the command will be executed. Each node should correspond to a configured host.
 - `command`: The command to be executed. Can include inline environment variables, shell operators, etc.
+
+```yaml
+- name: hostname
+  node: 
+    - oci1
+  command: hostname
+```
 
 ## Writing Commands
 
@@ -61,4 +77,30 @@ Commands should be valid shell commands. They can include environment variable u
 
 For more complex scenarios, such as installing software or running services, consider breaking down the tasks into multiple runfiles or using dependencies within tasks to ensure order of execution.
 
+- multiline commands:
 
+```yaml
+command: 
+  whoami ;
+  hostname -I ;
+  echo "$TEST1" ;
+  echo "$TEST2" ;
+  echo "It's working!"
+```
+
+- multiples tasks:
+
+```yaml
+tasks:
+  - name: who_am_i
+    node: 
+      - oci1
+      - oci2
+    command: whoami
+
+  - name: check_env1
+    node: 
+      - oci1
+      - oci2
+    command: echo "$TEST1"
+```
