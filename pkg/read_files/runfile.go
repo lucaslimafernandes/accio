@@ -13,18 +13,13 @@ type Task struct {
 	Command string   `yaml:"command"`
 }
 
-type Envs struct {
-	Key   string `yaml:"key"`
-	Value string `yaml:"value"`
-}
-
 type Runfile struct {
 	Name  string `yaml:"name"`
-	Envs  []Envs `yaml:"envs"`
 	Tasks []Task `yaml:"tasks"`
 }
 
 // RootUser bool   `yaml:"as_root"` // Not implemented
+// Envs // Not implemented
 
 func ReadRunfile(path *string) (*Runfile, error) {
 

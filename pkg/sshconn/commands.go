@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 
-	readfiles "github.com/lucaslimafernandes/pkg/read_files"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -43,46 +42,6 @@ func ExecCmd(ctx context.Context, cmd string, client *ssh.Client) (string, strin
 			return stdoutBuffer.String(), stderrBuffer.String(), fmt.Errorf("failed to execute command: %v", err)
 		}
 		return stdoutBuffer.String(), stderrBuffer.String(), nil
-	}
-
-}
-
-func SetEnv(ctx context.Context, envs *[]readfiles.Envs, client *ssh.Client) error {
-
-	session, err := client.NewSession()
-	if err != nil {
-		return fmt.Errorf("failed to create session: %v", err)
-	}
-	defer session.Close()
-
-	// var stdoutBuffer bytes.Buffer
-	// var stderrBuffer bytes.Buffer
-
-	// session.Stdout = &stdoutBuffer
-	// session.Stderr = &stderrBuffer
-
-	for _, items := range *envs {
-		err = session.Setenv(items.Key, items.Value)
-		if err != nil {
-			return fmt.Errorf("failed to set enviroment variables: %v", err)
-		}
-	}
-
-	// channel to wait for the command to complete.
-	doneChan := make(chan error)
-	go func() {
-		doneChan <- session.Wait()
-	}()
-
-	select {
-	case <-ctx.Done(): // If the context is cancelled, try close session before exit
-		session.Signal(ssh.SIGINT)
-		return ctx.Err()
-	case err := <-doneChan:
-		if err != nil {
-			return fmt.Errorf("failed to execute command: %v", err)
-		}
-		return nil
 	}
 
 }
