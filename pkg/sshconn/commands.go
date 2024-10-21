@@ -46,12 +46,12 @@ func ExecCmd(ctx context.Context, cmd string, client *ssh.Client) (string, strin
 
 }
 
-func NewExecCmd(ctx *context.Context, client *ssh.Client) (string, string, error) {
+func NewExecCmd(ctx *context.Context, client *ssh.Client, commands []string) (string, string, error) {
 
 	var stdoutBuffer bytes.Buffer
 	var stderrBuffer bytes.Buffer
 
-	commands := []string{"comando_1", "comando_2", "comando_3"}
+	// commands := []string{"comando_1", "comando_2", "comando_3"}
 
 	session, err := client.NewSession()
 	if err != nil {
