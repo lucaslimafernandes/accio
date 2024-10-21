@@ -7,6 +7,11 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+type Envs struct {
+	Key   string `yaml:"key"`
+	Value string `yaml:"value"`
+}
+
 type Task struct {
 	Name    string   `yaml:"name"`
 	Node    []string `yaml:"node"`
@@ -15,6 +20,7 @@ type Task struct {
 
 type Runfile struct {
 	Name  string `yaml:"name"`
+	Envs  []Envs `yaml:"envs"`
 	Tasks []Task `yaml:"tasks"`
 }
 
