@@ -8,45 +8,16 @@ envs:
     value: VALUE_2
 
 tasks:
-  - name: who_am_i
+  - name: multi_line
     node: 
       - oci1
       - oci2
-    command: whoami
+    command: 
+      whoami ;
+      hostname -I ;
+      echo "$TEST1" ;
+      echo "$TEST2" ;
+      echo "It's working!"
 
-  - name: check_env1
-    node: 
-      - oci1
-      - oci2
-    command: echo "$TEST1"
-
-  - name: check_env2
-    node: 
-      - oci1
-      - oci2
-    command: echo "$TEST2"
-
-  - name: raise_error
-    node: 
-      - oci1
-      - oci2
-    command: wh
-
-  - name: hostname
-    node: 
-      - oci1
-    command: hostname
-  
-  - name: hostname -I
-    node: 
-      - oci1
-      - oci2
-    command: hostname -I
-
-  - name: kidding
-    node: 
-      - oci1
-      - oci2
-    command: echo "It's working!"
   
 
