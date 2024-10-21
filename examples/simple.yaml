@@ -1,5 +1,4 @@
 runfile: simple_example
-remote_user: ubuntu
 
 tasks:
   - name: who_am_i

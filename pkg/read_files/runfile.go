@@ -14,10 +14,11 @@ type Task struct {
 }
 
 type Runfile struct {
-	Name       string `yaml:"name"`
-	RemoteUser string `yaml:"remote_user"`
-	Tasks      []Task `yaml:"tasks"`
+	Name  string `yaml:"name"`
+	Tasks []Task `yaml:"tasks"`
 }
+
+// RootUser bool   `yaml:"as_root"` // Not implemented
 
 func ReadRunfile(path *string) (*Runfile, error) {
 
