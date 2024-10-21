@@ -1,0 +1,17 @@
+runfile: install docker
+
+tasks:
+  - name: install_docker
+    node: 
+      - oci1
+    command: sudo curl -fsSL https://get.docker.com |bash
+
+  - name: docker_hello_world
+    node: 
+      - oci1
+    command: sudo docker run hello-world
+
+  - name: docker_images
+    node: 
+      - oci1
+    command: sudo docker images
