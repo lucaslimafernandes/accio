@@ -1,4 +1,4 @@
-runfile: simple_example
+runfile: multiple_commands
 
 envs:
   - key: TEST1

@@ -12,7 +12,7 @@ Inspiration in Ansible, but no versions nonsense like python x for ansible y
     - [X] Example 1
     - [X] Execute
     - [ ] Check installed
-    - [ ] SetEnvs
+    - [X] SetEnvs
     - [ ] More examples
     - [ ] Change user
     - [ ] Commands as array
@@ -24,6 +24,10 @@ Inspiration in Ansible, but no versions nonsense like python x for ansible y
     - [X] Errors
     - [X] Color
     - [ ] Dump
+- [ ] Execution
+    - [ ] Save output
+    - [ ] im-memory output
+    - [ ] reuse in another node output
 - [ ] Panic recoveries
 - [ ] Documentation
 - [ ] More things

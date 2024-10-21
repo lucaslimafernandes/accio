@@ -1,0 +1,12 @@
+runfile: first_runfile
+
+envs:
+  - key: MYNAME
+    value: Lucas
+
+tasks:
+  - name: hello
+    node: 
+      - oci1
+    command: 
+      echo "Hello, $MYNAME!"
