@@ -43,7 +43,6 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 	for _, items := range hosts.Nodes {
 
 		wg.Add(1)
-
 		go func() {
 
 			var logs Log
@@ -81,8 +80,6 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 				if slices.Contains(exec.Node, items.Name) {
 					stdout, stderr, err := sshconn.ExecCmd(ctx, exec.Command, conn)
 					if err != nil {
-						// _toPrint := fmt.Sprintf("%v: %v", err, stderr)
-						// utilities.ErrPrint(&items.Name, &exec.Name, &_toPrint)
 						utilities.ErrPrint(&items.Name, &exec.Name, &stderr)
 
 						mutex.Lock()
