@@ -4,6 +4,18 @@ From Latin, accio, meaning action
 
 So, do something on multiple servers, that's the idea.
 
+Accio is a tool designed to manage tasks executed on multiple remote servers via SSH. It allows you to configure and automate command execution on a variety of nodes using YAML configuration files, making remote server management more efficient and scalable.
+
+## Features
+
+- Define and manage SSH hosts in a simple configuration file.
+
+- Execute tasks remotely via SSH using runfiles.
+
+- Automate task execution on multiple servers.
+
+- Support for environment variables and multi-node commands.
+
 ## Commands
 
 * `accio -h` - Show available commands.
