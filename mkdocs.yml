@@ -3,3 +3,17 @@ site_url: https://lucaslimafernandes.github.io/accio
 repo_url: https://github.com/lucaslimafernandes/accio
 theme: material
 
+use_directory_urls: true
+  
+extra:
+  alternate:
+    - name: English
+      link: /accio/en/
+      lang: en
+
+    - name: Português
+      link: /accio/pt-BR/
+      lang: pt-BR
+
+
+

@@ -11,7 +11,7 @@ A typical runfile includes several key sections:
 
 ## Example Runfile
 
-Here's an example of a simple runfile named first_runfile.yaml:
+Here's an example of a simple runfile named `first_runfile.yaml`:
 
 ```yaml
 runfile: first_runfile
