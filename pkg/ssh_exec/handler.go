@@ -144,7 +144,8 @@ func Finish(nodesLogs *[]Log) {
 			fmt.Printf("Have errors occurred in: %v\n", itemNode.Node)
 			for _, value := range itemNode.Task {
 				if len(value.Errors) > 0 {
-					fmt.Println(value.Errors)
+					fmt.Printf("%s: %s\n", utilities.Colorize(&value.Task, "red"), value.Errors)
+					// fmt.Println(value.Errors)
 				}
 			}
 		}
