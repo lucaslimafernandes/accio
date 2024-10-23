@@ -7,16 +7,13 @@ import (
 	"os"
 
 	readfiles "github.com/lucaslimafernandes/pkg/read_files"
-	sshexec "github.com/lucaslimafernandes/pkg/ssh_exec"
+	sshexec "github.com/lucaslimafernandes/pkg/sshexec"
 )
 
 func main() {
 
 	help := flag.Bool("help", false, "Show available commands")
-	// run := flag.Bool("run", false, "Execute")
-	// host := flag.String("h", "", "host (format: ip:port)")
-	// user := flag.String("u", "", "user")
-	// keyPath := flag.String("k", "", "key path to SSH private key")
+	version := flag.Bool("version", false, "Show about Accion")
 
 	hostsPath := flag.String("hosts", "", "hosts path")
 	runfile := flag.String("run", "", "Runfile path")
@@ -25,9 +22,23 @@ func main() {
 
 	if *help {
 		flag.PrintDefaults()
+		return
 	}
 
-	if *hostsPath != "" {
+	if *version {
+		fmt.Printf(`
+[project]
+name = "Accio"
+version = "v1.0.0"
+description = "Accio is a tool designed to manage tasks executed on multiple remote servers via SSH."
+
+[repository]
+url = "https://github.com/lucaslimafernandes/accio"
+		`)
+		return
+	}
+
+	if *hostsPath != "" && *runfile != "" {
 
 		tasks, err := readfiles.ReadRunfile(runfile)
 		if err != nil {
