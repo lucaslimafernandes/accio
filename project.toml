@@ -1,0 +1,11 @@
+[project]
+name = "Accio"
+version = "v1.0.0"
+description = "Accio is a tool designed to manage tasks executed on multiple remote servers via SSH."
+
+[developer]
+author = "Lucas Lima Fernandes"
+email = "lucaslimafernandes@proton.me"
+
+[repository]
+url = "https://github.com/lucaslimafernandes/accio"
