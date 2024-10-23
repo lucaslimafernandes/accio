@@ -18,7 +18,8 @@ Accio é uma ferramenta projetada para gerenciar tarefas executadas em vários s
 
 ## Commands
 
-* `accio -h` - Exibe os comandos disponíveis.
+* `accio -help` - Exibe os comandos disponíveis.
+* `accio -version` - Exibe sobre o Accio.
 * `accio -hosts` - Caminho para o arquivo de hosts.
 * `accio -run` - Caminho para o arquivo de execução (Runfile).
 

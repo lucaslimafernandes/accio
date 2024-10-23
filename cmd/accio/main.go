@@ -13,7 +13,7 @@ import (
 func main() {
 
 	help := flag.Bool("help", false, "Show available commands")
-	version := flag.Bool("version", false, "Show about Accion")
+	version := flag.Bool("version", false, "Show about Accio")
 
 	hostsPath := flag.String("hosts", "", "hosts path")
 	runfile := flag.String("run", "", "Runfile path")

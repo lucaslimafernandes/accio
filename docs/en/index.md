@@ -18,7 +18,8 @@ Accio is a tool designed to manage tasks executed on multiple remote servers via
 
 ## Commands
 
-* `accio -h` - Show available commands.
+* `accio -help` - Show available commands.
+* `accio -version` - Show about Accio.
 * `accio -hosts` - hosts path.
 * `accio -run` - Runfile path.
 

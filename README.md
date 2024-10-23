@@ -65,7 +65,8 @@ This command will fetch the latest version of Accio, build it, and place the bin
 
 Accio supports a set of commands to interact with the remote servers and manage task execution. Below are some of the key commands:
 
-- `accio -h` - Show available commands.
+- `accio -help` - Show available commands.
+- `accio -version` - Show about Accio.
 - `accio -hosts` - Specify the path to the hosts configuration file.
 - `accio -run` - Specify the path to the runfile for executing tasks.
 
