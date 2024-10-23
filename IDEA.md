@@ -1,6 +1,6 @@
 # Project idea
 
-Inspiration in Ansible, but no versions nonsense like python x for ansible y
+Inspiration in Ansible
 
 ## Todo
 
@@ -8,6 +8,7 @@ Inspiration in Ansible, but no versions nonsense like python x for ansible y
     - [X] File example
     - [X] Read file
     - [X] Connect
+    - [ ] Localhost 
 - [ ] Runfile
     - [X] Example 1
     - [X] Execute
@@ -29,5 +30,5 @@ Inspiration in Ansible, but no versions nonsense like python x for ansible y
     - [ ] im-memory output
     - [ ] reuse in another node output
 - [ ] Panic recoveries
-- [ ] Documentation
+- [X] Documentation
 - [ ] More things
