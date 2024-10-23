@@ -10,10 +10,12 @@ import (
 	sshexec "github.com/lucaslimafernandes/pkg/sshexec"
 )
 
+const VERSION = "v1.0.0"
+
 func main() {
 
 	help := flag.Bool("help", false, "Show available commands")
-	version := flag.Bool("version", false, "Show about Accio")
+	version := flag.Bool("version", false, "Show Accio version")
 
 	hostsPath := flag.String("hosts", "", "hosts path")
 	runfile := flag.String("run", "", "Runfile path")
@@ -21,11 +23,6 @@ func main() {
 	flag.Parse()
 
 	if *help {
-		flag.PrintDefaults()
-		return
-	}
-
-	if *version {
 		fmt.Printf(`
 [project]
 name = "Accio"
@@ -34,7 +31,14 @@ description = "Accio is a tool designed to manage tasks executed on multiple rem
 
 [repository]
 url = "https://github.com/lucaslimafernandes/accio"
-		`)
+
+`)
+		flag.PrintDefaults()
+		return
+	}
+
+	if *version {
+		fmt.Println(VERSION)
 		return
 	}
 
