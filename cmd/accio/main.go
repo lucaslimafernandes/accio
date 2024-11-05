@@ -45,7 +45,10 @@ url = "https://github.com/lucaslimafernandes/accio"
 
 	if *localrun && *runfile != "" {
 
-		return
+		tasks, err := readfiles.ReadRunfile(runfile)
+		if err != nil {
+			log.Fatalln(err)
+		}
 
 	}
 
