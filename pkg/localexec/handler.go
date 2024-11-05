@@ -10,7 +10,10 @@ import (
 	readfiles "github.com/lucaslimafernandes/pkg/read_files"
 )
 
-func ExecCmd(ctx context.Context, cmdString string, task *readfiles.Runfile) (string, string, error) {
+func ExecCmd(cmdString string, task *readfiles.Runfile) (string, string, error) {
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "bash", "-c", cmdString)
 

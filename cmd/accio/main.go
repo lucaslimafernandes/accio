@@ -1,11 +1,13 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 
+	"github.com/lucaslimafernandes/pkg/localexec"
 	readfiles "github.com/lucaslimafernandes/pkg/read_files"
 	sshexec "github.com/lucaslimafernandes/pkg/sshexec"
 )
@@ -45,10 +47,14 @@ url = "https://github.com/lucaslimafernandes/accio"
 
 	if *localrun && *runfile != "" {
 
+		ctx := context.Background()
+
 		tasks, err := readfiles.ReadRunfile(runfile)
 		if err != nil {
 			log.Fatalln(err)
 		}
+
+		localexec.ExecCmd(ctx, tasks)
 
 	}
 
