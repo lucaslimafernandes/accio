@@ -19,6 +19,7 @@ func main() {
 
 	hostsPath := flag.String("hosts", "", "hosts path")
 	runfile := flag.String("run", "", "Runfile path")
+	localrun := flag.Bool("localrun", false, "Execute local")
 
 	flag.Parse()
 
@@ -40,6 +41,12 @@ url = "https://github.com/lucaslimafernandes/accio"
 	if *version {
 		fmt.Println(VERSION)
 		return
+	}
+
+	if *localrun && *runfile != "" {
+
+		return
+
 	}
 
 	if *hostsPath != "" && *runfile != "" {
