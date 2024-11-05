@@ -6,16 +6,25 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 
 	readfiles "github.com/lucaslimafernandes/pkg/read_files"
 )
 
-func ExecCmd(cmdString string, task *readfiles.Runfile) (string, string, error) {
+func ExecCmd(task *readfiles.Runfile) (string, string, error) {
+
+	var cmdStrings []string
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	cmd := exec.CommandContext(ctx, "bash", "-c", cmdString)
+	for _, comm := range task.Tasks {
+		cmdStrings = append(cmdStrings, comm.Command)
+	}
+
+	fullCommand := strings.Join(cmdStrings, "")
+
+	cmd := exec.CommandContext(ctx, "bash", "-c", fullCommand)
 
 	for _, env := range task.Envs {
 		cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", env.Key, env.Value))

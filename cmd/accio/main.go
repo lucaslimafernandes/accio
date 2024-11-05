@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -47,14 +46,17 @@ url = "https://github.com/lucaslimafernandes/accio"
 
 	if *localrun && *runfile != "" {
 
-		ctx := context.Background()
-
 		tasks, err := readfiles.ReadRunfile(runfile)
 		if err != nil {
 			log.Fatalln(err)
 		}
 
-		localexec.ExecCmd(ctx, tasks)
+		stdout, stderr, err := localexec.ExecCmd(tasks)
+		if err != nil {
+			log.Println(stderr)
+			log.Fatalln(err)
+		}
+		log.Println(stdout)
 
 	}
 
