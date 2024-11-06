@@ -6,23 +6,32 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"strings"
 
 	readfiles "github.com/lucaslimafernandes/pkg/read_files"
+	"github.com/lucaslimafernandes/pkg/utilities"
 )
 
-func ExecCmd(task *readfiles.Runfile) (string, string, error) {
+func ExecCmd(task *readfiles.Runfile) error {
 
-	var cmdStrings []string
+	runnerName := "localrun"
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	for _, comm := range task.Tasks {
-		cmdStrings = append(cmdStrings, comm.Command)
+	for _, exec := range task.Tasks {
+		stdout, stderr, err := execute(ctx, exec.Command, task)
+		if err != nil {
+			utilities.ErrPrint(&runnerName, &exec.Name, &stderr)
+			return err
+		}
+		utilities.OKPrint(&runnerName, &exec.Name, &stdout)
 	}
 
-	fullCommand := strings.Join(cmdStrings, "")
+	return nil
+
+}
+
+func execute(ctx context.Context, fullCommand string, task *readfiles.Runfile) (string, string, error) {
 
 	cmd := exec.CommandContext(ctx, "bash", "-c", fullCommand)
 

@@ -11,7 +11,7 @@ import (
 	sshexec "github.com/lucaslimafernandes/pkg/sshexec"
 )
 
-const VERSION = "v1.0.0"
+const VERSION = "v1.1.0"
 
 func main() {
 
@@ -19,8 +19,8 @@ func main() {
 	version := flag.Bool("version", false, "Show Accio version")
 
 	hostsPath := flag.String("hosts", "", "hosts path")
-	runfile := flag.String("run", "", "Runfile path")
 	localrun := flag.Bool("localrun", false, "Execute local")
+	runfile := flag.String("run", "", "Runfile path")
 
 	flag.Parse()
 
@@ -51,12 +51,10 @@ url = "https://github.com/lucaslimafernandes/accio"
 			log.Fatalln(err)
 		}
 
-		stdout, stderr, err := localexec.ExecCmd(tasks)
+		err = localexec.ExecCmd(tasks)
 		if err != nil {
-			log.Println(stderr)
 			log.Fatalln(err)
 		}
-		log.Println(stdout)
 
 	}
 
