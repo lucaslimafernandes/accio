@@ -22,26 +22,50 @@ Accio is a tool designed to manage tasks executed on multiple remote servers via
 * `accio -version` - Show Accio version.
 * `accio -hosts` - hosts path.
 * `accio -run` - Runfile path.
+* `accio -localrun` - Localhost execution.
 
 ## Project layout
 
 ```plaintext
 .
+├── build.sh
+├── CHANGELOG.md
 ├── cmd
 │   └── accio
 │       └── main.go
 ├── docs
-│   ├── example.md
-│   └── index.md
+│   ├── en
+│   │   ├── changelogs.md
+│   │   ├── contributing.md
+│   │   ├── errors.md
+│   │   ├── hosts.md
+│   │   ├── index.md
+│   │   ├── installation.md
+│   │   └── runfiles.md
+│   ├── index.md
+│   └── pt-BR
+│       ├── changelogs.md
+│       ├── contributing.md
+│       ├── errors.md
+│       ├── hosts.md
+│       ├── index.md
+│       ├── installation.md
+│       └── runfiles.md
 ├── examples
+│   ├── first_runfile.yaml
+│   ├── install_docker.yaml
+│   ├── multi_cmds.yaml
 │   └── simple.yaml
 ├── go.mod
 ├── go.sum
 ├── hosts.example.toml
+├── hosts.toml
 ├── IDEA.md
 ├── LICENSE
 ├── mkdocs.yml
 ├── pkg
+│   ├── localexec
+│   │   └── handler.go
 │   ├── read_files
 │   │   ├── hosts.go
 │   │   ├── hosts_test.go
@@ -49,10 +73,12 @@ Accio is a tool designed to manage tasks executed on multiple remote servers via
 │   ├── sshconn
 │   │   ├── commands.go
 │   │   └── sshconn.go
-│   ├── ssh_exec
+│   ├── sshexec
 │   │   └── handler.go
 │   └── utilities
-│       └── logs.go
+│       ├── logs.go
+│       └── simpleColors.go
+├── project.toml
 └── README.md
 
 ```

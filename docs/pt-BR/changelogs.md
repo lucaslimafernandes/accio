@@ -4,6 +4,11 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
 O formato é baseado em [Mantenha um Changelog](https://keepachangelog.com/pt-BR/1.1.0/), e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [v1.0.0] - 2024-12
+
+### Adicionado
+
+- Execução local.
 
 ## [v1.0.0] - 2024-10-21
 

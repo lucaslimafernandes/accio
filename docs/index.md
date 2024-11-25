@@ -69,11 +69,14 @@ Accio supports a set of commands to interact with the remote servers and manage 
 - `accio -version` - Show Accio version.
 - `accio -hosts` - Specify the path to the hosts configuration file.
 - `accio -run` - Specify the path to the runfile for executing tasks.
+- `accio -localrun` - Localhost execution.
 
 *Example usage:*
 
 ```bash
 accio -hosts /path/to/hosts -run /path/to/runfile.yaml
+
+accio -localrun -run /path/to/runfile.yaml
 ```
 
 ## Configuration
