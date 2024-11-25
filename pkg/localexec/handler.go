@@ -22,7 +22,6 @@ func ExecCmd(task *readfiles.Runfile) error {
 		stdout, stderr, err := execute(ctx, exec.Command, task)
 		if err != nil {
 			utilities.ErrPrint(&runnerName, &exec.Name, &stderr)
-			return err
 		}
 		utilities.OKPrint(&runnerName, &exec.Name, &stdout)
 	}
