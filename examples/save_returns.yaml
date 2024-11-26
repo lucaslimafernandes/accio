@@ -1,0 +1,21 @@
+runfile: multiple_commands
+
+envs:
+  - key: TEST1
+    value: VALUE_1
+
+  - key: TEST2
+    value: VALUE_2
+
+tasks:
+  - name: multi_line
+    node: 
+      - oci1
+      - oci2
+    command: 
+      whoami ;
+      hostname -I ;
+    save_output_as: hostnn
+
+  
+
