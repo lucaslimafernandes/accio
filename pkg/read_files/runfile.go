@@ -13,9 +13,11 @@ type Envs struct {
 }
 
 type Task struct {
-	Name    string   `yaml:"name"`
-	Node    []string `yaml:"node"`
-	Command string   `yaml:"command"`
+	Name             string   `yaml:"name"`
+	Node             []string `yaml:"node"`
+	Command          string   `yaml:"command"`
+	SaveOutput       *string  `yaml:"save_output_as"`
+	SaveOutputAsFile *string  `yaml:"save_output_as_file"`
 }
 
 type Runfile struct {

@@ -16,6 +16,6 @@ tasks:
       whoami ;
       hostname -I ;
     save_output_as: hostnn
-
+    save_output_as_file: hostnn.txt
   
 
