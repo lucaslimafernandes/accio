@@ -12,23 +12,12 @@ import (
 	"github.com/lucaslimafernandes/pkg/utilities"
 )
 
-type TaskLog struct {
-	Task   string
-	Ok     bool
-	Errors []error
-}
-
-type Log struct {
-	Node string
-	Task []TaskLog
-}
-
 var mutex sync.Mutex
 
 func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 
 	var errors []error
-	var nodesLogs []Log
+	var nodesLogs []utilities.Log
 	var wg sync.WaitGroup
 	var hosts *readfiles.Hosts
 
@@ -45,16 +34,16 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 		wg.Add(1)
 		go func() {
 
-			var logs Log
+			var logs utilities.Log
 
 			conn, err := sshconn.InitSSHConn(&items)
 			if err != nil {
 				log.Printf("Error to connect %v: %v\n", items.Name, err)
 
 				mutex.Lock()
-				logs = Log{
+				logs = utilities.Log{
 					Node: items.Name,
-					Task: append(logs.Task, TaskLog{
+					Task: append(logs.Task, utilities.TaskLog{
 						Task:   "SSH Connect",
 						Ok:     false,
 						Errors: []error{fmt.Errorf("failed to establish connection %v: %v", items.Name, err)},
@@ -66,9 +55,9 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 			}
 
 			mutex.Lock()
-			logs = Log{
+			logs = utilities.Log{
 				Node: items.Name,
-				Task: append(logs.Task, TaskLog{
+				Task: append(logs.Task, utilities.TaskLog{
 					Task: "SSH Connect",
 					Ok:   true,
 				}),
@@ -83,9 +72,9 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 						utilities.ErrPrint(&items.Name, &exec.Name, &stderr)
 
 						mutex.Lock()
-						logs = Log{
+						logs = utilities.Log{
 							Node: items.Name,
-							Task: append(logs.Task, TaskLog{
+							Task: append(logs.Task, utilities.TaskLog{
 								Task:   exec.Name,
 								Ok:     false,
 								Errors: []error{fmt.Errorf("%v: %v", err, stderr)},
@@ -98,9 +87,9 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 					}
 
 					mutex.Lock()
-					logs = Log{
+					logs = utilities.Log{
 						Node: items.Name,
-						Task: append(logs.Task, TaskLog{
+						Task: append(logs.Task, utilities.TaskLog{
 							Task: exec.Name,
 							Ok:   true,
 						}),
@@ -119,36 +108,6 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 
 	wg.Wait()
 
-	Finish(&nodesLogs)
-
-}
-
-func Finish(nodesLogs *[]Log) {
-
-	var thereErrs bool
-
-	fmt.Println("\nThe execution is done")
-	fmt.Printf("\n")
-
-	for _, itemNode := range *nodesLogs {
-		for _, value := range itemNode.Task {
-
-			if !value.Ok {
-				thereErrs = true
-				break
-			}
-
-		}
-
-		if thereErrs {
-			fmt.Printf("Have errors occurred in: %v\n", itemNode.Node)
-			for _, value := range itemNode.Task {
-				if len(value.Errors) > 0 {
-					fmt.Printf("%s: %s\n", utilities.Colorize(&value.Task, "red"), value.Errors)
-					// fmt.Println(value.Errors)
-				}
-			}
-		}
-	}
+	utilities.Finish(&nodesLogs)
 
 }
