@@ -11,7 +11,7 @@ import (
 	sshexec "github.com/lucaslimafernandes/pkg/sshexec"
 )
 
-const VERSION = "v1.1.0"
+const VERSION = "v1.1.1"
 
 func main() {
 
