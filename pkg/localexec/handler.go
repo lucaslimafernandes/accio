@@ -24,7 +24,8 @@ func ExecCmd(task *readfiles.Runfile) error {
 	for _, exec := range task.Tasks {
 		stdout, stderr, err := execute(ctx, exec.Command, task)
 		if err != nil {
-			utilities.ErrPrint(&runnerName, &exec.Name, &stderr)
+			err_out := fmt.Sprintf("%v", err)
+			utilities.ErrPrint(&runnerName, &exec.Name, &err_out)
 
 			logs = utilities.Log{
 				Node: runnerName,
@@ -34,6 +35,7 @@ func ExecCmd(task *readfiles.Runfile) error {
 					Errors: []error{fmt.Errorf("%v: %v", err, stderr)},
 				}),
 			}
+			continue
 		}
 		utilities.OKPrint(&runnerName, &exec.Name, &stdout)
 	}
