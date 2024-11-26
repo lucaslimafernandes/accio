@@ -13,6 +13,9 @@ import (
 
 func ExecCmd(task *readfiles.Runfile) error {
 
+	var logs utilities.Log
+	var nodesLogs []utilities.Log
+
 	runnerName := "localrun"
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -22,9 +25,22 @@ func ExecCmd(task *readfiles.Runfile) error {
 		stdout, stderr, err := execute(ctx, exec.Command, task)
 		if err != nil {
 			utilities.ErrPrint(&runnerName, &exec.Name, &stderr)
+
+			logs = utilities.Log{
+				Node: runnerName,
+				Task: append(logs.Task, utilities.TaskLog{
+					Task:   exec.Name,
+					Ok:     false,
+					Errors: []error{fmt.Errorf("%v: %v", err, stderr)},
+				}),
+			}
 		}
 		utilities.OKPrint(&runnerName, &exec.Name, &stdout)
 	}
+
+	nodesLogs = append(nodesLogs, logs)
+
+	utilities.Finish(&nodesLogs)
 
 	return nil
 

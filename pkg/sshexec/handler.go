@@ -16,7 +16,7 @@ var mutex sync.Mutex
 
 func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 
-	var errors []error
+	// var errors []error
 	var nodesLogs []utilities.Log
 	var wg sync.WaitGroup
 	var hosts *readfiles.Hosts
@@ -82,7 +82,7 @@ func RunCmd(hostsPath *string, tasks *readfiles.Runfile) {
 						}
 						mutex.Unlock()
 
-						errors = append(errors, fmt.Errorf("%v: %v", err, stderr))
+						// errors = append(errors, fmt.Errorf("%v: %v", err, stderr))
 						continue
 					}
 
