@@ -18,4 +18,10 @@ tasks:
     save_output_as: hostnn
     save_output_as_file: hostnn.txt
   
-
+  - name: GREP
+    node: 
+      - localhost
+    command: 
+      ls |grep README;
+    save_output_as_file: ls.txt
+  

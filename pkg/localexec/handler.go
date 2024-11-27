@@ -38,6 +38,9 @@ func ExecCmd(task *readfiles.Runfile) error {
 			continue
 		}
 		utilities.OKPrint(&runnerName, &exec.Name, &stdout)
+		if exec.SaveOutputAsFile != nil {
+			utilities.SaveOutputAsFile(exec.SaveOutputAsFile, &stdout)
+		}
 	}
 
 	nodesLogs = append(nodesLogs, logs)

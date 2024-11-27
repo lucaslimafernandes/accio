@@ -4,6 +4,7 @@
 
 # Project private files
 hosts.toml
+*.txt
 
 # Binaries for programs and plugins
 *.exe
