@@ -3,6 +3,7 @@ package utilities
 import (
 	"log"
 	"os"
+	"strings"
 )
 
 func SaveOutputAsFile(filepath, text *string) {
@@ -18,4 +19,18 @@ func SaveOutputAsFile(filepath, text *string) {
 		log.Fatalf("failed to write in file: %v\n", err)
 	}
 
+}
+
+func ExtractVars(text string) string {
+
+	start := strings.Index(text, "{{") + 2
+	end := strings.Index(text, "}}")
+
+	if start < end {
+		extracted := text[start:end]
+
+		return strings.TrimSpace(extracted)
+	}
+
+	return ""
 }

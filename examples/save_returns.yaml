@@ -25,3 +25,8 @@ tasks:
       ls |grep README;
     save_output_as_file: ls.txt
   
+  - name: reuse var
+    node: 
+      - localhost
+    command: 
+      echo "{{ hostnn }}";
