@@ -16,6 +16,7 @@ func ExecCmd(task *readfiles.Runfile) error {
 	var logs utilities.Log
 	var nodesLogs []utilities.Log
 
+	mapSaveOutput := make(map[string]string)
 	runnerName := "localrun"
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -40,6 +41,10 @@ func ExecCmd(task *readfiles.Runfile) error {
 		utilities.OKPrint(&runnerName, &exec.Name, &stdout)
 		if exec.SaveOutputAsFile != nil {
 			utilities.SaveOutputAsFile(exec.SaveOutputAsFile, &stdout)
+		}
+
+		if exec.SaveOutput != nil {
+			mapSaveOutput[*exec.SaveOutput] = stdout
 		}
 	}
 
