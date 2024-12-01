@@ -36,6 +36,24 @@ func ExtractVars(text string, vars map[string]string) string {
 	return ""
 }
 
+func ExecWithVars(text *string, vars *map[string]string) bool {
+
+	start := strings.Index(*text, "{{")
+	end := strings.Index(*text, "}}")
+
+	if start != -1 && end > start {
+
+		extracted := strings.TrimSpace((*text)[start+2 : end])
+		_, ok := (*vars)[extracted]
+		if ok {
+			return true
+		}
+	}
+
+	return false
+
+}
+
 func ExtractVarsReturn(text string, vars map[string]string) string {
 
 	var result string
