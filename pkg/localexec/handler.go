@@ -23,7 +23,16 @@ func ExecCmd(task *readfiles.Runfile) error {
 	defer cancel()
 
 	for _, exec := range task.Tasks {
-		stdout, stderr, err := execute(ctx, exec.Command, task)
+
+		// save_output_as execution
+		var newCmd string
+		if utilities.ExecWithVars(&exec.Command, &mapSaveOutput) {
+			newCmd = utilities.ExtractVarsReturn(&exec.Command, &mapSaveOutput)
+		} else {
+			newCmd = exec.Command
+		}
+
+		stdout, stderr, err := execute(ctx, newCmd, task)
 		if err != nil {
 			err_out := fmt.Sprintf("%v", err)
 			utilities.ErrPrint(&runnerName, &exec.Name, &err_out)

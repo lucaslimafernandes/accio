@@ -30,3 +30,16 @@ tasks:
       - localhost
     command: 
       echo "{{ hostnn }}";
+
+  - name: reuse var2
+    node: 
+      - localhost
+    save_output_as: vaisalvo
+    command: 
+      echo "JSON NOJS";
+
+  - name: reuse var3
+    node: 
+      - localhost
+    command: 
+      echo "{{ vaisalvo }}";
